@@ -1,0 +1,922 @@
+/* RNGdle UIUC - Exact 1:1 Color Palette & Theme */
+
+:root {
+  --color-lab-bg: #05070f;
+  --color-lab-panel: #0b1120;
+  --color-lab-panel-2: #101a30;
+  --color-lab-line: #1c2740;
+  --color-lab-line-bright: #2b3d63;
+  --color-lab-ink: #e8eefc;
+  --color-lab-muted: #8698bd;
+  --color-lab-dim: #5a6a8c;
+
+  --color-signal: #38ffc2;
+  --color-signal-hover: #5affd0;
+  --color-signal-dark: #04251b;
+  --color-hot: #ff5c7a;
+  --color-warn: #ffd23f;
+
+  --roll-accent: #38ffc2;
+  --flip-duration: 0.38s;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", Menlo, Monaco, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Exact RNGdle Body Background (Technical Blueprint Grid) */
+body {
+  background-color: var(--color-lab-bg);
+  color: var(--color-lab-ink);
+  font-family: var(--font-sans);
+  background-image: 
+    linear-gradient(#1c274047 1px, transparent 1px),
+    linear-gradient(90deg, #1c274047 1px, transparent 1px),
+    radial-gradient(80% 60% at 50% -10%, rgba(56, 255, 194, 0.06), transparent 70%);
+  background-position: top;
+  background-size: 52px 52px, 52px 52px, 100% 100%;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem 3rem;
+  overflow-x: hidden;
+}
+
+/* Top Navbar */
+.site-nav {
+  width: 100%;
+  border-bottom: 1px solid var(--color-lab-line);
+  background: rgba(5, 7, 15, 0.85);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.nav-container {
+  max-width: 580px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+}
+
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+}
+
+.brand-lambda {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  border: 1px solid var(--color-lab-line-bright);
+  background: var(--color-lab-panel-2);
+  color: var(--color-signal);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.brand-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title-main {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-lab-ink);
+}
+
+.brand-title-main span {
+  color: var(--color-signal);
+}
+
+.brand-title-sub {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--color-lab-dim);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  font-size: 12px;
+  color: var(--color-lab-muted);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: var(--color-lab-ink);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Page Layout */
+.infinite-page {
+  width: 100%;
+  max-width: 540px;
+  margin: 1.25rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.infinite-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.infinite-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--color-lab-ink);
+}
+
+.infinite-header p {
+  font-size: 12px;
+  color: var(--color-lab-muted);
+  margin-top: 4px;
+}
+
+.infinite-header button {
+  font-size: 12px;
+  color: #a9bbdb;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.infinite-header button:hover {
+  color: var(--color-signal);
+}
+
+/* The Core Machine: .roll-lab (Exact RNGdle Container) */
+.roll-lab {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--color-lab-line-bright);
+  border-radius: 22px;
+  padding: 0 20px 20px;
+  background: linear-gradient(155deg, #121c2b, #0c1220 45%, #0b1020);
+  box-shadow: 0 18px 65px rgba(0, 0, 0, 0.4), inset 0 1px rgba(194, 255, 236, 0.04);
+}
+
+.roll-lab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 90% 55% at 50% 24%, color-mix(in srgb, var(--roll-accent) 9%, transparent), transparent 90%);
+  pointer-events: none;
+  z-index: -1;
+  transition: background 0.3s ease;
+}
+
+/* Toolbar */
+.roll-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 54px;
+  border-bottom: 1px solid rgba(167, 210, 235, 0.07);
+}
+
+.roll-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #a4b6d4;
+  text-transform: uppercase;
+}
+
+.roll-eyebrow i {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--roll-accent);
+  box-shadow: 0 0 10px var(--roll-accent);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.roll-effects {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.roll-tool-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-lab-line);
+  color: #b4c3df;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.roll-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: #405373;
+}
+
+.roll-tool-btn.active {
+  color: var(--color-signal);
+  border-color: var(--color-signal);
+  background: rgba(56, 255, 194, 0.08);
+}
+
+/* Readout */
+.roll-readout {
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding: 16px 0 12px;
+}
+
+.roll-discovery {
+  width: 100%;
+}
+
+.roll-result-label {
+  font-size: 9px;
+  letter-spacing: 0.19em;
+  color: #abbfd9;
+  text-transform: uppercase;
+  font-weight: 600;
+  min-height: 14px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Digit Cards 3D Layout */
+.roll-number {
+  margin: 12px 0 16px;
+  outline: none;
+}
+
+.roll-digit-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.roll-digit {
+  display: block;
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 58px;
+  height: clamp(66px, 16vw, 82px);
+  border-radius: 10px;
+  color: #eef5ff;
+  font: 650 clamp(22px, 6.8vw, 34px) / 1 var(--font-mono);
+  perspective: 650px;
+  transition: transform 0.25s ease-out;
+}
+
+.roll-card-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform var(--flip-duration) cubic-bezier(0.35, 0.05, 0.2, 1);
+}
+
+.roll-card-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid #3a4e68;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: inset 0 1px rgba(211, 231, 255, 0.08), 0 5px 12px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+/* Card Back (Exact RNGdle back) */
+.roll-card-back {
+  background: repeating-linear-gradient(45deg, rgba(145, 201, 216, 0.03) 0 1px, transparent 1px 6px),
+              linear-gradient(155deg, #1a3341, #101b2b);
+  color: #86acb6;
+}
+
+.roll-card-back::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(120, 188, 174, 0.15);
+  border-radius: 6px;
+}
+
+.roll-card-mark {
+  font-size: 24px;
+  transform: translateY(-2px);
+  color: #7bb5a7;
+  font-weight: 300;
+  transition: color 0.2s;
+}
+
+.roll-card-index {
+  position: absolute;
+  bottom: 6px;
+  font: 8px var(--font-mono);
+  letter-spacing: 0.15em;
+  color: #789aa9;
+}
+
+/* Card Front (Exact RNGdle front) */
+.roll-card-front {
+  transform: rotateY(180deg);
+  background: linear-gradient(155deg, #29405a, #122238);
+  border-color: color-mix(in srgb, var(--roll-accent) 48%, #405571);
+  text-shadow: 0 0 22px color-mix(in srgb, var(--roll-accent) 25%, transparent);
+}
+
+.roll-card-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(214, 255, 246, 0.25), transparent 80%);
+  transform: translate(-120%);
+}
+
+/* Card Active States */
+.roll-digit.is-next {
+  transform: translateY(-6px);
+}
+
+.roll-digit.is-next .roll-card-back {
+  border-color: #72edc8;
+  box-shadow: 0 0 20px rgba(56, 255, 194, 0.25), inset 0 1px rgba(192, 255, 239, 0.25);
+}
+
+.roll-digit.is-next .roll-card-mark {
+  color: #acffe5;
+  animation: roll-icon-tumble 1.2s infinite ease-in-out;
+}
+
+.roll-digit.is-turning {
+  z-index: 2;
+  animation: card-turn-lift var(--flip-duration) ease-in-out;
+}
+
+.roll-digit.is-turning .roll-card-inner {
+  will-change: transform;
+}
+
+.roll-digit.is-turning .roll-card-front::after {
+  animation: card-turn-sheen var(--flip-duration) ease-out;
+}
+
+.roll-digit.is-locked .roll-card-inner {
+  transform: rotateY(180deg);
+}
+
+.roll-digit.is-locked.empty-slot .roll-card-front {
+  background: linear-gradient(155deg, #16202e, #0c1320);
+  border-color: #263548;
+  color: #435873;
+}
+
+.roll-digit.is-locked.empty-slot .digit-val {
+  font-size: 1.1rem;
+  opacity: 0.55;
+}
+
+/* Animations */
+@keyframes card-turn-lift {
+  0% { transform: translateY(-4px); }
+  45% { transform: translateY(-10px) scale(1.04); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes roll-icon-tumble {
+  0%, 100% { transform: translateY(-2px) rotate(0deg); }
+  30% { transform: translateY(-2px) rotate(-16deg); }
+  70% { transform: translateY(-2px) rotate(18deg); }
+}
+
+@keyframes card-turn-sheen {
+  0%, 45% { transform: translate(-120%); }
+  100% { transform: translate(120%); }
+}
+
+/* Rarity Display & Meta Row */
+.roll-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 32px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  animation: badge-arrive 0.3s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+
+.roll-rarity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roll-rarity > span:first-child {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: uppercase;
+}
+
+.roll-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(14, 23, 37, 0.7);
+  border: 1px solid #283a52;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+}
+
+.roll-score-badge .score-label {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--color-lab-dim);
+  text-transform: uppercase;
+}
+
+.roll-score-badge .score-val {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-signal);
+  font-variant-numeric: tabular-nums;
+}
+
+.roll-total-ep-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-lab-dim);
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid #23344a;
+}
+
+.roll-total-ep-badge strong {
+  color: var(--color-signal);
+  font-weight: 700;
+}
+
+/* Location Name Banner */
+.roll-location-name {
+  margin: 14px 0 6px;
+  text-align: center;
+  animation: badge-arrive 0.3s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+
+.roll-location-name h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.roll-location-name h2 span.implied-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-lab-muted);
+  margin-left: 6px;
+}
+
+/* Reveal Progress Bar */
+.roll-reveal-progress {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  margin-top: 14px;
+  text-align: left;
+  color: #a6bdd8;
+  font-size: 10px;
+  font-family: var(--font-mono);
+}
+
+.roll-reveal-progress > div {
+  grid-column: 1 / -1;
+  height: 4px;
+  background: #1c2b3e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.roll-reveal-progress i {
+  display: block;
+  height: 100%;
+  background: var(--roll-accent);
+  border-radius: inherit;
+  transition: width 0.25s ease-out;
+}
+
+/* Primary Roll Button (Exact RNGdle Mint Action Button) */
+.roll-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 55px;
+  border: 1px solid #87ffda;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #5affd0, #24e9ac);
+  color: var(--color-signal-dark);
+  font-weight: 750;
+  font-size: 16px;
+  position: relative;
+  box-shadow: 0 6px 22px rgba(29, 255, 195, 0.15), inset 0 1px rgba(237, 255, 249, 0.4);
+  cursor: pointer;
+  transition: box-shadow 0.15s, background 0.15s, transform 0.1s;
+  user-select: none;
+  margin-top: 8px;
+}
+
+.roll-primary:hover:not(:disabled) {
+  background: #78ffdb;
+  box-shadow: 0 6px 26px rgba(56, 255, 194, 0.3);
+  transform: translateY(-1px);
+}
+
+.roll-primary:active:not(:disabled) {
+  background: #31eab4;
+  transform: translateY(1px);
+}
+
+.roll-primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+  filter: grayscale(0.4);
+}
+
+.roll-primary > span:last-child {
+  position: absolute;
+  right: 18px;
+  font-size: 16px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: #033626;
+}
+
+/* Roll Keep / Toolbar */
+.roll-keep {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+  margin-top: 6px;
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--color-lab-muted);
+}
+
+.roll-keep-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.roll-keep-check input {
+  accent-color: var(--color-signal);
+  cursor: pointer;
+}
+
+.roll-text-button {
+  background: none;
+  border: none;
+  color: #9cb5db;
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 4px;
+}
+
+.roll-text-button:hover {
+  color: #fff;
+}
+
+/* Badges Section (.roll-breakdown) */
+.roll-breakdown {
+  margin-top: 16px;
+  border-top: 1px solid rgba(167, 210, 235, 0.08);
+  padding-top: 14px;
+}
+
+.roll-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.roll-section-heading h2 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e2edfb;
+}
+
+.roll-badge-count {
+  color: #b1c5df;
+  font: 10px var(--font-mono);
+  letter-spacing: 0.1em;
+}
+
+.roll-badge-list {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.roll-badge {
+  border: 1px solid var(--badge-border, #2f425d);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: linear-gradient(90deg, var(--badge-bg, rgba(20, 31, 49, 0.6)), rgba(14, 23, 37, 0.95) 75%);
+  box-shadow: inset 0 0 24px color-mix(in srgb, var(--badge-color, transparent) 8%, transparent);
+  animation: badge-arrive 0.28s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+
+@keyframes badge-arrive {
+  0% {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.roll-badge-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.roll-badge-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--badge-color);
+  background: color-mix(in srgb, var(--badge-color) 12%, transparent);
+  color: var(--badge-color);
+  border-radius: 9px;
+  font-size: 17px;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--badge-color) 25%, transparent);
+}
+
+.roll-badge-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.roll-badge-name h3 {
+  font-size: 13.5px;
+  font-weight: 650;
+  line-height: 1.35;
+  color: #e5eefb;
+  margin-bottom: 3px;
+}
+
+.roll-badge-tier {
+  display: inline-block;
+  padding: 2px 7px;
+  border: 1px solid var(--badge-border);
+  border-radius: 4px;
+  background: var(--badge-bg);
+  color: var(--badge-color);
+  font-size: 8.5px;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.roll-badge-points {
+  flex: none;
+  align-self: flex-start;
+  color: #8affd7;
+  font: 600 17px var(--font-mono);
+  text-align: right;
+}
+
+.roll-badge-points small {
+  display: block;
+  font: 9px var(--font-mono);
+  color: #9eb4d0;
+  margin-top: 2px;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 5, 12, 0.85);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: #0d1525;
+  border: 1px solid var(--color-lab-line-bright);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 1.1rem 1.3rem;
+  border-bottom: 1px solid var(--color-lab-line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.modal-body {
+  padding: 1.3rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-lab-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  color: #fff;
+}
+
+/* Bank Elements */
+.codex-row {
+  background: #080d19;
+  border: 1px solid #1c2740;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.codex-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.codex-title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.codex-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 3px;
+}
+
+.codex-chip {
+  font-size: 9px;
+  background: #101a30;
+  border: 1px solid #233452;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #9cb1ce;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  background: #172439;
+  color: #fff;
+  border: 1px solid #2e4363;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.25s ease;
+  z-index: 200;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .roll-digit {
+    max-width: 46px;
+    height: 60px;
+  }
+  .roll-card-mark {
+    font-size: 18px;
+  }
+}

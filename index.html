@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RNGdle UIUC – Campus Location Rarity & Attributes</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>λ</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Site Navbar -->
+  <nav class="site-nav">
+    <div class="nav-container">
+      <a href="#" class="brand-link">
+        <span class="brand-lambda">λ</span>
+        <div class="brand-titles">
+          <span class="brand-title-main">RNGDLE<span>.UIUC</span></span>
+          <span class="brand-title-sub">The Campus Rarity Lab</span>
+        </div>
+      </a>
+      <div class="nav-links">
+        <button id="navBankBtn" class="nav-link">Bank & Odds</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Page Container -->
+  <div class="infinite-page">
+    <header class="infinite-header">
+      <div>
+        <h1>RNGdle Infinite</h1>
+        <p>Roll. Reveal. Discover. Repeat.</p>
+      </div>
+      <button id="bankModalLink">Campus Bank & Odds ↗</button>
+    </header>
+
+    <!-- The RNGdle Machine Lab -->
+    <main class="roll-lab" id="rollLab">
+      <!-- Toolbar -->
+      <div class="roll-toolbar">
+        <span class="roll-eyebrow">
+          <i id="statusPip"></i>
+          <span id="rollCounterText">ROLL #0 • INFINITE LAB</span>
+          <span class="roll-total-ep-badge">TOTAL EP: <strong id="totalEpText">0</strong></span>
+        </span>
+        <div class="roll-effects">
+          <button id="turboToggleBtn" class="roll-tool-btn" title="Toggle Turbo Mode">⚡ Turbo: OFF</button>
+          <button id="soundToggleBtn" class="roll-tool-btn active" title="Toggle Sound FX">🔊 Sound</button>
+        </div>
+      </div>
+
+      <!-- Roll Readout / 3D Digit Cards -->
+      <div class="roll-readout">
+        <div class="roll-discovery">
+          <div class="roll-result-heading">
+            <span id="rollStatusLabel" class="roll-result-label">PRESS ROLL TO DISCOVER</span>
+          </div>
+
+          <!-- 8-Digit Row (RNGdle 3D Cards) -->
+          <div class="roll-number">
+            <div class="roll-digit-row" id="digitRow">
+              <!-- Dynamically rendered 8 digits -->
+            </div>
+          </div>
+
+          <!-- Rarity Pill & Score Box -->
+          <div class="roll-meta-row" id="rollMetaRow" style="display: none;">
+            <div class="roll-rarity" id="rollRarityBox">
+              <span id="rarityPill"></span>
+            </div>
+            <div class="roll-score-badge" id="rollScoreBox">
+              <span class="score-label">RARITY SCORE</span>
+              <span class="score-val" id="metricScore">+0 EP</span>
+            </div>
+          </div>
+
+          <!-- Location Name Banner -->
+          <div class="roll-location-name" id="rollLocationBox" style="display: none;">
+            <h2 id="metricLocation">—</h2>
+          </div>
+
+          <!-- Reveal Progress Bar (Visible during suspense roll) -->
+          <div class="roll-reveal-progress" id="revealProgress" style="display: none;">
+            <span id="progressLabel">Revealing digit 1 of 8...</span>
+            <span id="progressCount">0 / 8</span>
+            <div><i id="progressBar" style="width: 0%;"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Big Primary Roll Button -->
+      <button id="rollBtn" class="roll-primary">
+        <span id="rollBtnText">Roll next location</span>
+        <span>↵</span>
+      </button>
+
+      <!-- Keep / Auto / Share Controls -->
+      <div class="roll-keep">
+        <div style="display: flex; gap: 14px; align-items: center;">
+          <label class="roll-keep-check">
+            <input type="checkbox" id="autoRollCheck">
+            <span>Auto-roll next</span>
+          </label>
+          <label class="roll-keep-check">
+            <input type="checkbox" id="turboCheck">
+            <span>⚡ Turbo mode</span>
+          </label>
+        </div>
+        <button id="shareBtn" class="roll-text-button" style="display: none;">
+          Copy roll results
+        </button>
+      </div>
+
+      <!-- Badges Section (.roll-breakdown) -->
+      <section class="roll-breakdown" id="rollBreakdown">
+        <div class="roll-section-heading">
+          <h2>Rarity Badges</h2>
+          <span id="badgeCountLabel" class="roll-badge-count">0 BADGES</span>
+        </div>
+        <ul class="roll-badge-list" id="badgeList">
+          <li class="roll-badge" style="border: 1px dashed #2b3d56; background: rgba(14, 23, 37, 0.4); text-align: center; color: var(--color-lab-dim); font-size: 12px; padding: 18px;">
+            Pull the lever above to reveal campus attributes.
+          </li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <!-- Bank & Odds Modal -->
+  <div id="bankModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>📊 Campus Bank & Rarity Odds</h2>
+        <button class="modal-close-btn" data-close="bankModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 11px; line-height: 1.6; color: var(--color-lab-muted); background: #080d19; padding: 12px; border-radius: 9px; border-left: 3px solid var(--color-signal);">
+          <strong>Rules:</strong> The machine evaluates an <strong>8-digit array</strong> (max word length from <code>GRAINGER</code>). Shorter words prefix empty characters (<code>␣</code>) so names align to the right.
+          <br><br>
+          • <strong>ISR (Mythic):</strong> Hardcoded to exactly <strong>1 in 19 chance (~5.263%)</strong>!
+          <br>• <strong>Anomalies:</strong> IKE, Taft, Siebel, UGL.
+        </div>
+        <div id="bankRosterList" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">Copied roll to clipboard!</div>
+
+  <!-- Scripts -->
+  <script src="audio.js"></script>
+  <script src="locations.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
